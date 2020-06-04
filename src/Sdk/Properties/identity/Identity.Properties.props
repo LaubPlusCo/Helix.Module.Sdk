@@ -1,0 +1,10 @@
+<!-- Not working yet.
+        Having some issues with the sitecore.framework.runtime sdk 
+        -->
+<Project>
+    <PropertyGroup>
+        <NotPublished>true</NotPublished>
+        <UseFileSystemPublishProfile>false</UseFileSystemPublishProfile>
+        <DeployOnBuild>false</DeployOnBuild>
+    </PropertyGroup>
+</Project>

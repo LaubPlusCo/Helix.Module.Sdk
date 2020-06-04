@@ -1,0 +1,59 @@
+<!--
+***********************************************************************************************
+  Copies xdt files to destination(s) specified in the item group XmlTransformsDestination.
+  
+  Intended usage; Copy xdt files to multiple folders after a publish, so they are ready to be transformed into configs when building docker images.
+  
+  Example:
+  
+  ´´´SomeProject.csproj / Platform.properties.props
+      <ItemGroup>
+        <XmlTransformsDestination Include="$(SolutionDir)Docker\images\cd\wwwroot\" />
+        <XmlTransformsDestination Include="$(SolutionDir)Docker\images\cm\wwwroot\" />
+      </ItemGroup>
+  ´´´ 
+  
+  ´´´$(SolutionDir)Docker\images\cd\dockerfile
+      
+      # escape=`
+      ARG BASE_IMAGE
+
+      FROM $BASE_IMAGE as final
+
+      SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+      ARG ENVIRONMENT_NAME='Production'
+      ARG CONFIGURATION_NAME='Release'
+
+      COPY wwwroot/ /inetpub/wwwroot
+
+      SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
+
+      RUN $pattern = '\.(Any|{0}|{1}|Cd)\.xdt' -f $env:ENVIRONMENT_NAME,$env:CONFIGURATION_NAME; `
+          $xdts = [System.Collections.ArrayList]@(); `
+          $xdts.AddRange(@(ls -Path 'C:\\inetpub\\wwwroot\\' | ? { $_.Name -match ('.*{0}' -f $pattern) } )); `
+          $xdts | % { Write-Host 'File: $($_.FullName)'; & 'C:\\tools\\scripts\\Invoke-XdtTransform.ps1' -Path ($_.FullName -replace $pattern, '')  -XdtPath $_.FullName; };
+          
+      RUN ls -Path 'C:\\inetpub\\wwwroot\\*.xdt' -Recurse | % { rm -Path $_.FullName; };
+      
+    ´´´
+  
+                                                                      [Anders Laub // Laub+Co]
+                                                                      
+***********************************************************************************************
+-->
+
+
+<Project>
+  <Target Name="CopyXmlTransforms" AfterTargets="WebPublish;Publish" Outputs="%(XmlTransformsDestination.Identity)" Condition="'$(CopyXmlTransformFiles)' == 'true'">
+    <PropertyGroup>
+      <_XmlTransformDestination>%(XmlTransformsDestination.Identity)</_XmlTransformDestination>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <XmlTransformFiles Include="**\*.$(XmlTransformFilePostfix)" Condition="'$(XmlTransformSkipBuildConfig)'!='true'" Exclude="$(BaseIntermediateOutputPath)**\*.*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(XmlTransformFiles)" DestinationFiles="@(XmlTransformFiles->'$(_XmlTransformDestination)%(RecursiveDir)%(Filename)%(Extension)')" OverwriteReadOnlyFiles="true" />
+  </Target>
+</Project>

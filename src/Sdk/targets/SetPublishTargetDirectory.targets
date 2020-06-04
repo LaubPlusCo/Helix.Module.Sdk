@@ -1,0 +1,38 @@
+<!--
+***********************************************************************************************
+    SetPublishTargetDirectory.targets
+
+      Sets the target directory based on the PublishTarget msbuild property with fallback 
+      to SitecoreRoleType
+
+      The PublishTarget property is used to locate the path in the _PublishPaths item group
+      
+                                                                      [Anders Laub // Laub+Co]
+                                                                      
+***********************************************************************************************
+-->
+
+<Project>
+
+  <Target Name="SetPublishTargetDirectory" BeforeTargets="Build">
+    <PropertyGroup>
+      <PublishTarget Condition="'$(PublishTarget)' == ''">$(SitecoreRoleType)</PublishTarget>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_CurrentPublishPath Include="@(_PublishPaths)" Condition="%(Identity) == '$(PublishTarget)'" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <PublishTargetDirectory Condition="'%(_CurrentPublishPath.Path)' !=''">%(_CurrentPublishPath.Path)</PublishTargetDirectory>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(PublishTargetDirectory)' !=''">
+      <PublishTargetDirectory Condition="!HasTrailingSlash('$(PublishTargetDirectory)')">$(PublishTargetDirectory)\</PublishTargetDirectory>
+      <publishUrl>$(PublishTargetDirectory)</publishUrl>
+      <PublishDir>$(PublishTargetDirectory)</PublishDir>
+    </PropertyGroup>
+
+  </Target>
+
+</Project>

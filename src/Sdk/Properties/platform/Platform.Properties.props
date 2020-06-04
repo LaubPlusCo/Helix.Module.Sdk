@@ -1,0 +1,80 @@
+<Project>
+      <PropertyGroup>
+            <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+            <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+            <OutputType>Library</OutputType>
+            <Deterministic>false</Deterministic>
+            <PlatformTarget>x64</PlatformTarget>
+            <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+
+            <!-- OutputPath, OutDir, UseCommonOutputDirectory:
+          Shared sln output path to reduce build I/O.
+          WARNING: Can cause race conditions in rare cases, if so just comment out or remove. 
+          Also note, this is for website/"platform" builds only - ensure props are different dependent on target instance  
+
+            <OutputPath>$(SolutionDir)bin\$(Configuration)\$(SitecoreRoleType)\</OutputPath>
+            <OutDir>$(OutputPath)</OutDir>
+            <UseCommonOutputDirectory>True</UseCommonOutputDirectory>
+          -->
+          
+            <!-- Set solution-wide config file for binding redirects and remove potential build time warnings -->
+            <!--<AppConfig>$(SolutionDir)\build\Bindings.config</AppConfig>-->
+
+            <!-- TransformWebConfigEnabled
+          Disables the default msbuild webconfig transformation target, 
+          not related to Helix style transforms. Disabled for slight performance improvement.
+          -->
+            <TransformWebConfigEnabled>False</TransformWebConfigEnabled>
+            <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+            <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+            <IgnoreTargetFrameworkAttributeVersionMismatch>true</IgnoreTargetFrameworkAttributeVersionMismatch>
+            <PackageAsSingleFile>false</PackageAsSingleFile>
+            
+            
+            <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+            
+            <AddRazorSupportForMvc>false</AddRazorSupportForMvc>
+
+            <MvcBuildViews>false</MvcBuildViews>
+            <NoWarn>$(NoWarn);42016,41999,42017</NoWarn>
+
+            <!-- UseBasicFileSystemPublish
+          Replaces publish target with a very basic file system publish -->
+            <UseBasicFileSystemPublish>true</UseBasicFileSystemPublish>
+
+            <!-- CopyXmlTransformFiles
+          Toggles if xdt files should be copied (used for copying xdt's to use in docker image builds), 
+          see ./build/targets/CopyXmlTransforms.targets for details -->
+            <CopyXmlTransformFiles>true</CopyXmlTransformFiles>
+
+            <!-- RunXmlTransformsOnPublish
+          Toggles transforming xml files post publishing, 
+          see ./build/targets/Website.TransformXml.targets for details -->
+            <RunXmlTransforms>false</RunXmlTransforms>
+
+            <!-- DeployOnBuild
+          Toogles automatic-publishing on builds, including from VS -->
+            <DeployOnBuild>true</DeployOnBuild>
+
+            <!-- RunXmlTransformsOnPublish
+          Toggles transforming xml files post publishing, 
+          see ./build/targets/Website.TransformXml.targets for details -->
+            <RunXmlTransforms>true</RunXmlTransforms>
+
+            <!-- XmlTransformFilePostfix
+          File postfix for transformation files (default: xdt)
+          Name files [whatever].[{Configuration}|Any].xdt 
+          Ex. web.config.debug.xdt or web.config.any.xdt -->
+            <XmlTransformFilePostfix>xdt</XmlTransformFilePostfix>
+
+            <!-- LegacyPreventCopyLocal
+          Prevent assemblies and other files from packagereferences that should have been rivateassets=all|runtime 
+          to be copied to package for publishing even though the package structure does not follow nuget conventions.  
+          see ./build/targets/PreventCopyLocal.targets for details -->
+            <LegacyPreventCopyLocal>true</LegacyPreventCopyLocal>
+
+
+
+      </PropertyGroup>
+
+</Project>

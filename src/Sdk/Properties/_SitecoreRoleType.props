@@ -1,0 +1,35 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0' ">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <SolutionDir Condition="'$(SolutionDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), Solution.props))</SolutionDir>
+        <SolutionDir Condition="'$(SolutionDir)' != ''">$([MSBuild]::EnsureTrailingSlash('$(SolutionDir)'))</SolutionDir>
+        <_SolutionBuildPropertiesFile Condition="'$(_SolutionBuildPropertiesFile)' == '' AND '$(SolutionDir)' != '' AND exists('$(SolutionDir)Solution.props')">$(SolutionDir)Solution.props</_SolutionBuildPropertiesFile>
+        <_UserSolutionBuildPropertiesFile Condition="'$(_SolutionBuildPropertiesFile)' == ''">$(_SolutionBuildPropertiesFile).user</_UserSolutionBuildPropertiesFile>
+        <SitecoreRoleType Condition="'$(SitecoreRoleType)' == '' and $(TargetFramework.StartsWith('net4'))">platform</SitecoreRoleType>
+        <SitecoreRoleType Condition="'$(SitecoreRoleType)' == ''">none</SitecoreRoleType>
+        <_SdkRoleTypePropertiesDir>$(MSBuildThisFileDirectory)$(SitecoreRoleType)\</_SdkRoleTypePropertiesDir>
+    </PropertyGroup>
+
+    <!-- Import solution specific props file if it exists  -->
+    <Import Project="$(_SolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != ''" />
+
+    <!-- Ensure AdditionalPropertiesDir property is set-->
+    <PropertyGroup>
+        <AdditionalPropertiesDir Condition="'$(AdditionalPropertiesDir)' == ''">$(SolutionDir)</AdditionalPropertiesDir>
+        <AdditionalPropertiesDir>$([MSBuild]::EnsureTrailingSlash('$(AdditionalSitecoreRolePropertiesDir)'))</AdditionalPropertiesDir>
+    </PropertyGroup>
+
+    <!-- Import role type specific props from sdk -->
+    <Import Project="$(_SdkRoleTypePropertiesDir)*.props" Condition="'$(SitecoreRoleType)' != ''" />
+
+    <!-- Import role type specific props from solution -->
+    <Import Project="$(AdditionalPropertiesDir)$(SitecoreRoleType).props" Condition="'$(AdditionalPropertiesDir)' != '' AND '$(SitecoreRoleType)' != '' AND exists('$(AdditionalPropertiesDir)$(SitecoreRoleType).props')" />
+
+    <!-- Override properties using .user file if it exists -->
+    <Import Project="$(_UserSolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != '' AND exists('$(_UserSolutionBuildPropertiesFile)')" />
+
+</Project>

@@ -1,0 +1,140 @@
+<!--
+***********************************************************************************************
+BasicFileSystemPublish.targets
+  
+  A basic crude filesystem copy replacement for the "classic" WebPublish target from Visual Studio. 
+  
+  Note; Relies on the Content msbuild item group. 
+        This should not contain globs in subdirs. f.ex. app_config/**/*.config will ignore the 
+        folder /app_config/ on copy.
+  
+                                                                      [Anders Laub // Laub+Co]
+                                                                      
+***********************************************************************************************
+-->
+
+<Project Condition="'$(UseBasicFileSystemPublish)' == 'true'">
+
+  <PropertyGroup>
+
+
+    <PublishDependsOn>
+      BeforePublish;
+      BasicFileSystemPublish;
+      AfterPublish;
+    </PublishDependsOn>
+
+    <BasicFileSystemPublishDependsOn>
+       $(BasicFileSystemPublishDependsOn)
+      _EnsurePublishTargetDirectory;
+      _GatherFilesForBasicFileSystemPublish;
+      _ExcludeFilesFromBasicFileSystemPublish;
+      _BasicFileSystemPublishCopyFiles;
+    </BasicFileSystemPublishDependsOn>
+
+    <_DeployOnBuildDependsOn>
+      $(_DeployOnBuildDependsOn)
+      BasicFileSystemPublish;
+    </_DeployOnBuildDependsOn>
+
+  </PropertyGroup>
+
+
+  <!-- Extension points for BeforePublish and AfterPublish-->
+  <Target Name="BeforePublish" />
+  <Target Name="AfterPublish" />
+
+  <!--
+  ***********************************************************************************************
+  TARGET : _EnsurePublishTargetDirectory
+
+      Ensures the publish target directory exists
+  ***********************************************************************************************
+ -->
+  <Target Name="_EnsurePublishTargetDirectory">
+    <Message Importance="High" Text="Creating $(PublishTargetDirectory)" Condition="!Exists('$(PublishTargetDirectory)')" />
+    <MakeDir Directories="$(PublishTargetDirectory)" Condition="!Exists('$(PublishTargetDirectory)')" />
+    <MakeDir Directories="$(PublishTargetDirectory)\bin" Condition="!Exists('$(PublishTargetDirectory)\bin')" />
+  </Target>
+
+  <!--
+  ***********************************************************************************************
+  TARGET : _GatherFilesForBasicFileSystemPublish
+
+  
+      Gather all content and compiled assemblies from project that should be copied. 
+      Note; no temporary folder is made since no transformations are performed on the copied 
+      files.
+  ***********************************************************************************************
+ -->
+  <Target Name="_GatherFilesForBasicFileSystemPublish" Outputs="">
+    <PropertyGroup>
+      <OutDir Condition="!HasTrailingSlash('$(OutDir)')">$(OutDir)\</OutDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <_AssembliesForFileSystemCopy Include="$(OutDir)*.dll;$(OutDir)*.pdb" />
+      <FileSystemCopyAssemblies Include="@(_AssembliesForFileSystemCopy)" Condition="'$(UseBinFolder)' != 'false'" />
+      <FileSystemCopyPublishFiles Include="@(Content)" Condition="'%(CopyToPublishDirectory)' == '' OR '%(CopyToPublishDirectory)' == 'Always'" />
+      <FileSystemCopyPublishFiles Include="@(_AssembliesForFileSystemCopy)" Condition="'$(UseBinFolder)' == 'false'" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+  ***********************************************************************************************
+  TARGET : _ExcludeFilesFromBasicFileSystemPublish
+  ***********************************************************************************************
+ -->
+  <Target Name="_ExcludeFilesFromBasicFileSystemPublish" Condition="'$(LegacyPreventCopyLocal)' == 'true'">
+    <!-- _IgnoredFiles
+          Item group for containing assembly names etc. that should not be published.
+          Default contains the SitecoreAssemblies item group (ootb assemblies) 
+          reference the Sitecore.Platform.Assemblies nuget package to set this.
+        -->
+    <ItemGroup>
+      <_IgnoredFiles Include="@(SitecoreAssemblies)" Condition="'@(SitecoreAssemblies)' != ''" />
+
+      <!-- Temporary; assembly is missing in the SitecoreAssemblies list -->
+      <_IgnoredFiles Include="Sitecore.LayoutService.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileSystemCopyPublishFiles Remove="@(_IgnoredFiles)" Condition="'%(Filename)' != '' and '@(_IgnoredFiles)' != ''" />
+      <FileSystemCopyAssemblies Remove="@(_IgnoredFiles)" Condition="'%(Filename)' != '' and '@(_IgnoredFiles)' != ''" />
+    </ItemGroup>
+  </Target>
+
+
+  <!--
+  ***********************************************************************************************
+  TARGET : BasicFileSystemPublish
+    
+      Performs file copy
+  ***********************************************************************************************
+ -->
+  <Target Name="_BasicFileSystemPublishCopyFiles">
+
+    <Copy SourceFiles="@(FileSystemCopyPublishFiles)" DestinationFiles="@(FileSystemCopyPublishFiles->'$(PublishTargetDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" 
+          SkipUnchangedFiles="true" 
+          OverwriteReadOnlyFiles="true" />
+          
+    <Copy SourceFiles="@(FileSystemCopyAssemblies)" 
+          DestinationFiles="@(FileSystemCopyAssemblies->'$(PublishTargetDirectory)bin\%(RecursiveDir)%(Filename)%(Extension)')" 
+          SkipUnchangedFiles="true" 
+          OverwriteReadOnlyFiles="true" />
+
+  </Target>
+
+  <!--
+  ***********************************************************************************************
+  TARGET : BasicFileSystemPublish
+    
+      Trigger the pipeline - BasicFileSystemPublishDependsOn targets
+  ***********************************************************************************************
+ -->
+  <Target Name="BasicFileSystemPublish" DependsOnTargets="$(BasicFileSystemPublishDependsOn)" Condition="'$(UseBasicFileSystemPublish)' == 'true'">
+  </Target>
+
+  <Target Name="_DeployOnBuild" DependsOnTargets="$(_DeployOnBuildDependsOn)" AfterTargets="Build" Condition="'$(DeployOnBuild)'== 'true'">
+  </Target>
+
+</Project>

@@ -1,0 +1,26 @@
+<!--
+***********************************************************************************************
+ToggleAspNetCoreAppState.targets
+
+  Create/delete an App_Offline.htm file in the $(PublishTargetDirectory) before/after publish target.
+  
+  This target can be used to remove file locks when aspnetcore apps are IIS hosted - doesn't work with Kestrel.
+  
+  
+                                                                      [Anders Laub // Laub+Co]
+                                                                      
+***********************************************************************************************
+-->
+
+
+<Project>
+  
+  <Target Name="SetIISAppOffline" BeforeTargets="Publish" Condition="$(SetIISAppOfflineBeforePublish) == 'true' and exists('$(PublishTargetDirectory)')">
+    <Touch Files="$(PublishTargetDirectory)App_Offline.htm" ForceTouch="true" AlwaysCreate="true" />
+  </Target>
+
+  <Target Name="SetIISAppOnline" AfterTargets="Publish" Condition="$(SetIISAppOnlineAfterPublish) == 'true' and exists('$(PublishTargetDirectory)')">
+    <Delete Files="$(PublishTargetDirectory)App_Offline.htm" Condition="exists('$(PublishTargetDirectory)App_Offline.htm')"  />
+  </Target>
+
+</Project>
