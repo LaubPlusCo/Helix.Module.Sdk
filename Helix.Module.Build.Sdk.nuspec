@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Helix.Module.Build.Sdk</id>
-    <version>0.2.9</version>
+    <version>0.2.13.5</version>
     <authors>Anders Laub Christoffersen, Laub + Co</authors>
     <owners>The Sitecore community</owners>
     <language>en-US</language>
@@ -10,7 +10,7 @@
     <developmentDependency>true</developmentDependency>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <projectUrl>https://github.com/LaubPlusCo/Helix.Module.Sdk</projectUrl>
-    <iconUrl>https://github.com/LaubPlusCo/LaubPlusCo.Helix.VsTemplates/blob/master/Logo/vs.helix.2.png?raw=true</iconUrl>
+    <icon>vs-helix-icon.png</icon>
     <description>MSBuild extensions to support SDK-style project formats and multi-targeting in Sitecore Helix solutions.</description>
     <copyright>© Anders Laub Christoffersen, Laub + Co 2020 Laub + Co.</copyright>
     <tags>Sitecore Helix Build</tags>
@@ -18,5 +18,6 @@
   <files>
     <file src="src\Sdk\" target="Sdk" />
     <file src="LICENSE" target="LICENSE" />
+    <file src="vs-helix-icon.png" target="vs-helix-icon.png" />
   </files>
 </package>

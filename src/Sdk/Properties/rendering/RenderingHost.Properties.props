@@ -2,27 +2,27 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <CopyXmlTransformFiles>false</CopyXmlTransformFiles>
-    <RunXmlTransforms>false</RunXmlTransforms>
-    <UseBasicFileSystemPublish>false</UseBasicFileSystemPublish>
-    <DeployOnBuild>true</DeployOnBuild>
-    <WebPublishMethod>FileSystem</WebPublishMethod>
-    <PublishProvider>FileSystem</PublishProvider>
-    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
-    <LastUsedPlatform>Any CPU</LastUsedPlatform>
-    <ExcludeApp_Data>False</ExcludeApp_Data>
-    <PublishFramework>netcoreapp3.1</PublishFramework>
-    <DeleteExistingFiles>False</DeleteExistingFiles>
+    <AddRazorSupportForMvc  Condition="'$(AddRazorSupportForMvc)' == ''">true</AddRazorSupportForMvc>
+    <CopyXmlTransformFiles  Condition="'$(CopyXmlTransformFiles)' == ''">false</CopyXmlTransformFiles>
+    <RunXmlTransforms  Condition="'$(RunXmlTransforms)' == ''">false</RunXmlTransforms>
+    <UseBasicFileSystemPublish  Condition="'$(UseBasicFileSystemPublish)' == ''">false</UseBasicFileSystemPublish>
+    <WebPublishMethod Condition="'$(WebPublishMethod)' == ''">FileSystem</WebPublishMethod>
+    <PublishProvider  Condition="'$(PublishProvider)' == ''">FileSystem</PublishProvider>
+    <LastUsedBuildConfiguration Condition="'$(LastUsedBuildConfiguration)' == ''">Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform Condition="'$(LastUsedPlatform)' == ''">Any CPU</LastUsedPlatform>
+    <ExcludeApp_Data  Condition="'$(ExcludeApp_Data)' == ''">False</ExcludeApp_Data>
+    <PublishFramework  Condition="'$(PublishFramework)' == ''">netcoreapp3.1</PublishFramework>
+    <DeleteExistingFiles Condition="'$(DeleteExistingFiles)' == ''">False</DeleteExistingFiles>
 
     <!-- Toggles *.deps/runtimeconfig.json files -->
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <EnableDefaultContentItems>true</EnableDefaultContentItems>
+    <PreserveCompilationContext Condition="'$(PreserveCompilationContext)' == ''">true</PreserveCompilationContext>
+    <EnableDefaultContentItems Condition="'$(EnableDefaultContentItems)' == ''">true</EnableDefaultContentItems>
 
     <!-- Takes app offline before publish by creating App_Offline.htm file in publish target dir -->
-    <SetIISAppOfflineBeforePublish>true</SetIISAppOfflineBeforePublish>
+    <SetIISAppOfflineBeforePublish Condition="'$(DeployOnBuild)' == ''">true</SetIISAppOfflineBeforePublish>
 
     <!-- Bring app back online after publish by deleting App_Offline.htm file in publish target dir -->
-    <SetIISAppOnlineAfterPublish>true</SetIISAppOnlineAfterPublish>
+    <SetIISAppOnlineAfterPublish Condition="'$(DeployOnBuild)' == ''">true</SetIISAppOnlineAfterPublish>
+
   </PropertyGroup>
 </Project>

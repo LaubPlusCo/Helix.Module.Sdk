@@ -17,15 +17,21 @@ BasicFileSystemPublish.targets
 
   <PropertyGroup>
 
-
     <PublishDependsOn>
       BeforePublish;
       BasicFileSystemPublish;
       AfterPublish;
     </PublishDependsOn>
 
+    <!-- Legacy support attempt - perhaps remove -->
+    <WebPublishDependsOn>
+      BeforePublish;
+      BasicFileSystemPublish;
+      AfterPublish;
+    </WebPublishDependsOn>
+
     <BasicFileSystemPublishDependsOn>
-       $(BasicFileSystemPublishDependsOn)
+       $(BasicFileSystemPublishDependsOn);
       _EnsurePublishTargetDirectory;
       _GatherFilesForBasicFileSystemPublish;
       _ExcludeFilesFromBasicFileSystemPublish;
@@ -33,8 +39,8 @@ BasicFileSystemPublish.targets
     </BasicFileSystemPublishDependsOn>
 
     <_DeployOnBuildDependsOn>
-      $(_DeployOnBuildDependsOn)
-      BasicFileSystemPublish;
+      $(_DeployOnBuildDependsOn);
+      $(PublishDependsOn);
     </_DeployOnBuildDependsOn>
 
   </PropertyGroup>
@@ -67,15 +73,23 @@ BasicFileSystemPublish.targets
       files.
   ***********************************************************************************************
  -->
-  <Target Name="_GatherFilesForBasicFileSystemPublish" Outputs="">
+  <Target Name="_GatherFilesForBasicFileSystemPublish">
     <PropertyGroup>
       <OutDir Condition="!HasTrailingSlash('$(OutDir)')">$(OutDir)\</OutDir>
     </PropertyGroup>
+    
+    <ItemGroup Condition="'$(PublishSolutionOutput)' != 'true'">
+      <_FileSystemCopyPublishFiles Include="@(Content)" Condition="'%(CopyToPublishDirectory)' != 'Never'" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(PublishSolutionOutput)' == 'true'">
+      <_FileSystemCopyPublishFiles Include="$(OutDir)**\*.*" Exclude="$(OutDir)*.dll;$(OutDir)*.pdb"/>
+    </ItemGroup>
+
     <ItemGroup>
       <_AssembliesForFileSystemCopy Include="$(OutDir)*.dll;$(OutDir)*.pdb" />
-      <FileSystemCopyAssemblies Include="@(_AssembliesForFileSystemCopy)" Condition="'$(UseBinFolder)' != 'false'" />
-      <FileSystemCopyPublishFiles Include="@(Content)" Condition="'%(CopyToPublishDirectory)' == '' OR '%(CopyToPublishDirectory)' == 'Always'" />
-      <FileSystemCopyPublishFiles Include="@(_AssembliesForFileSystemCopy)" Condition="'$(UseBinFolder)' == 'false'" />
+      <_FileSystemCopyBinAssemblies Include="@(_AssembliesForFileSystemCopy)" Condition="'$(UseBinFolder)' != 'false'" />
+      <_FileSystemCopyPublishFiles Include="@(_AssembliesForFileSystemCopy)" Condition="'$(UseBinFolder)' == 'false'" />
     </ItemGroup>
   </Target>
 
@@ -98,8 +112,8 @@ BasicFileSystemPublish.targets
     </ItemGroup>
 
     <ItemGroup>
-      <FileSystemCopyPublishFiles Remove="@(_IgnoredFiles)" Condition="'%(Filename)' != '' and '@(_IgnoredFiles)' != ''" />
-      <FileSystemCopyAssemblies Remove="@(_IgnoredFiles)" Condition="'%(Filename)' != '' and '@(_IgnoredFiles)' != ''" />
+      <_FileSystemCopyPublishFiles Remove="@(_IgnoredFiles)" Condition="'%(Filename)' != '' and '@(_IgnoredFiles)' != ''" />
+      <_FileSystemCopyBinAssemblies Remove="@(_IgnoredFiles)" Condition="'%(Filename)' != '' and '@(_IgnoredFiles)' != ''" />
     </ItemGroup>
   </Target>
 
@@ -113,13 +127,22 @@ BasicFileSystemPublish.targets
  -->
   <Target Name="_BasicFileSystemPublishCopyFiles">
 
-    <Copy SourceFiles="@(FileSystemCopyPublishFiles)" DestinationFiles="@(FileSystemCopyPublishFiles->'$(PublishTargetDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" 
-          SkipUnchangedFiles="true" 
+    <PropertyGroup>
+      <PublishSkipUnchangedFiles Condition="'$(PublishSkipUnchangedFiles)' == ''">true</PublishSkipUnchangedFiles>
+    </PropertyGroup>
+
+    <!-- Debug messages; consider if should just be Info  -->
+    <Message Importance="High" Condition="'$(PublishSolutionOutput)' == 'true'" Text="$(MSBuildProjectName): Copying role type '$(SitecoreRoleType)' solution output for to '$(PublishTargetDirectory)'" />
+    <Message Importance="High" Condition="'$(PublishSolutionOutput)' != 'true'" Text=" $(MSBuildProjectName): Copying project output to '$(PublishTargetDirectory)'" />
+
+    <Copy SourceFiles="@(_FileSystemCopyPublishFiles)" DestinationFiles="@(_FileSystemCopyPublishFiles->'$(PublishTargetDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" 
+          SkipUnchangedFiles="$(PublishSkipUnchangedFiles)" 
           OverwriteReadOnlyFiles="true" />
           
-    <Copy SourceFiles="@(FileSystemCopyAssemblies)" 
-          DestinationFiles="@(FileSystemCopyAssemblies->'$(PublishTargetDirectory)bin\%(RecursiveDir)%(Filename)%(Extension)')" 
-          SkipUnchangedFiles="true" 
+    <Copy Condition="'$(UseBinFolder)' != 'false'"
+          SourceFiles="@(_FileSystemCopyBinAssemblies)"
+          DestinationFiles="@(_FileSystemCopyBinAssemblies->'$(PublishTargetDirectory)bin\%(RecursiveDir)%(Filename)%(Extension)')" 
+          SkipUnchangedFiles="$(PublishSkipUnchangedFiles)" 
           OverwriteReadOnlyFiles="true" />
 
   </Target>
@@ -131,10 +154,10 @@ BasicFileSystemPublish.targets
       Trigger the pipeline - BasicFileSystemPublishDependsOn targets
   ***********************************************************************************************
  -->
-  <Target Name="BasicFileSystemPublish" DependsOnTargets="$(BasicFileSystemPublishDependsOn)" Condition="'$(UseBasicFileSystemPublish)' == 'true'">
+  <Target Name="BasicFileSystemPublish" DependsOnTargets="$(BasicFileSystemPublishDependsOn)" Condition="'$(UseBasicFileSystemPublish)' == 'true' AND '$(PublishTargetDirectory)' != ''">
   </Target>
 
-  <Target Name="_DeployOnBuild" DependsOnTargets="$(_DeployOnBuildDependsOn)" AfterTargets="Build" Condition="'$(DeployOnBuild)'== 'true'">
+  <Target Name="_DeployOnBuild" DependsOnTargets="$(_DeployOnBuildDependsOn)" AfterTargets="Build" Condition="'$(UseBasicFileSystemPublish)' == 'true' AND '$(DeployOnBuild)'== 'true'">
   </Target>
 
 </Project>

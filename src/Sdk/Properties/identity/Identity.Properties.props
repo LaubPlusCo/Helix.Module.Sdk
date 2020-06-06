@@ -3,7 +3,6 @@
         -->
 <Project>
     <PropertyGroup>
-        <NotPublished>true</NotPublished>
         <UseFileSystemPublishProfile>false</UseFileSystemPublishProfile>
         <DeployOnBuild>false</DeployOnBuild>
     </PropertyGroup>

@@ -17,19 +17,22 @@
     <!-- Import solution specific props file if it exists  -->
     <Import Project="$(_SolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != ''" />
 
+    <!-- Override solution properties using .user file if it exists -->
+    <Import Project="$(_UserSolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != '' AND exists('$(_UserSolutionBuildPropertiesFile)')" />
+
     <!-- Ensure AdditionalPropertiesDir property is set-->
     <PropertyGroup>
         <AdditionalPropertiesDir Condition="'$(AdditionalPropertiesDir)' == ''">$(SolutionDir)</AdditionalPropertiesDir>
         <AdditionalPropertiesDir>$([MSBuild]::EnsureTrailingSlash('$(AdditionalSitecoreRolePropertiesDir)'))</AdditionalPropertiesDir>
     </PropertyGroup>
 
-    <!-- Import role type specific props from sdk -->
-    <Import Project="$(_SdkRoleTypePropertiesDir)*.props" Condition="'$(SitecoreRoleType)' != ''" />
-
     <!-- Import role type specific props from solution -->
     <Import Project="$(AdditionalPropertiesDir)$(SitecoreRoleType).props" Condition="'$(AdditionalPropertiesDir)' != '' AND '$(SitecoreRoleType)' != '' AND exists('$(AdditionalPropertiesDir)$(SitecoreRoleType).props')" />
 
-    <!-- Override properties using .user file if it exists -->
-    <Import Project="$(_UserSolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != '' AND exists('$(_UserSolutionBuildPropertiesFile)')" />
+    <!-- Import role type specific props from user -->
+    <Import Project="$(AdditionalPropertiesDir)$(SitecoreRoleType).props.user" Condition="'$(AdditionalPropertiesDir)' != '' AND '$(SitecoreRoleType)' != '' AND exists('$(AdditionalPropertiesDir)$(SitecoreRoleType).props.user')" />
+
+    <!-- Import role type specific props from sdk -->
+    <Import Project="$(_SdkRoleTypePropertiesDir)*.props" Condition="'$(SitecoreRoleType)' != ''" />
 
 </Project>

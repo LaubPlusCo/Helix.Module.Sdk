@@ -1,7 +1,6 @@
 <Project>  
   <PropertyGroup>
-    <NotPublished>true</NotPublished>
-    <UseDeployByFileSystemCopy>false</UseDeployByFileSystemCopy>
+    <UseBasicFileSystemPublish>false</UseBasicFileSystemPublish>
     <DeployOnBuild>false</DeployOnBuild>
   </PropertyGroup>
 </Project>

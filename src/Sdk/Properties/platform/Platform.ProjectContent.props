@@ -15,29 +15,28 @@ Platform.ProjectContent.props
 
 <Project>
     <ItemGroup>
-        <Content Include="**\*.config" Exclude="$(BaseIntermediateOutputPath)**\*.*">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        <Content Include="**\*.config;**\*.manifest" Exclude="$(BaseIntermediateOutputPath)**\*.*">
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
 
         <Content Include="**\*.html;**\*.cshtml;**\*.aspx;**\*.ascx;**\*.ashx" Exclude="$(BaseIntermediateOutputPath)**\*.*">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
 
         <Content Include="**\*.js;**\*.json;**\*.css;**\*.xml;**\*.txt;**\*.html;**\*.htm" Exclude="$(BaseIntermediateOutputPath)**\*.*;$(ProjectDir)Properties\**\*">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
 
         <Content Include="**\*.png;**\*.jpg;**\*.gif;**\*.ico;**\*.svg;**\*.tiff;**\*.eot;**\*.ttf;**\*.woff;**\*.woff2" Exclude="$(BaseIntermediateOutputPath)**\*.*">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-
-        <Content Include="**\*.manifest" Exclude="$(BaseIntermediateOutputPath)**\*.*">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
 
         <Content Remove="bin\**\*.*" />

@@ -2,10 +2,16 @@
 ***********************************************************************************************
     SetPublishTargetDirectory.targets
 
-      Sets the target directory based on the PublishTarget msbuild property with fallback 
-      to SitecoreRoleType
+      Sets the target directory based on the PublishTarget msbuild property using SitecoreRoleType
+      as fallback.
 
-      The PublishTarget property is used to locate the path in the _PublishPaths item group
+      The PublishTarget property is used to locate the path in the _PublishPaths item group.
+
+      Use 
+      
+        Condition="'$(PublishTargetEnvironment)' == '{Environment name}'"
+
+      in Solution.props to target environment specific paths.
       
                                                                       [Anders Laub // Laub+Co]
                                                                       
@@ -14,25 +20,52 @@
 
 <Project>
 
-  <Target Name="SetPublishTargetDirectory" BeforeTargets="Build">
+  <PropertyGroup>
+    <SetPublishTargetDirectoryDependsOn>
+    $(SetPublishTargetDirectoryDependsOn)
+    _ValidatePublishTargetProperties;
+    _EnsurePublishTargetProperty;
+    _LookupPublishPath;
+    _SetPublishTargetDirectory;
+    _UpdatePublishPaths;
+    </SetPublishTargetDirectoryDependsOn>
+  </PropertyGroup>
+
+  <Target Name="_ValidatePublishTargetProperties">
+    <PropertyGroup>
+      <_HasValidPublishTargetProperties Condition="'$(PublishTarget)' != '' OR '$(SitecoreRoleType)' != ''">true</_HasValidPublishTargetProperties>
+    </PropertyGroup>
+    <Warning Condition="'$(_HasValidPublishTargetProperties)' != 'true'" Text="$(MSBuildProjectFile): Does not have a 'SitecoreRoleType' or 'PublishTarget' property set." />
+  </Target>
+
+  <Target Name="_EnsurePublishTargetProperty" Condition="'$(_HasValidPublishTargetProperties)' == 'true'">
     <PropertyGroup>
       <PublishTarget Condition="'$(PublishTarget)' == ''">$(SitecoreRoleType)</PublishTarget>
     </PropertyGroup>
+  </Target>
 
+  <Target Name="_LookupPublishPath" Condition="'$(_HasValidPublishTargetProperties)' == 'true'">
     <ItemGroup>
       <_CurrentPublishPath Include="@(_PublishPaths)" Condition="%(Identity) == '$(PublishTarget)'" />
     </ItemGroup>
+  </Target>
 
+  <Target Name="_SetPublishTargetDirectory">
     <PropertyGroup>
       <PublishTargetDirectory Condition="'%(_CurrentPublishPath.Path)' !=''">%(_CurrentPublishPath.Path)</PublishTargetDirectory>
     </PropertyGroup>
-    
+    <Warning Condition="'$(PublishTargetDirectory)' == ''" Text="$(MSBuildProjectFile): Could not lookup PublishTargetDirectory for '$(PublishTarget)'" />
+  </Target>
+
+  <Target Name="_UpdatePublishPaths" Condition="'$(PublishTargetDirectory)' != ''">
     <PropertyGroup Condition="'$(PublishTargetDirectory)' !=''">
       <PublishTargetDirectory Condition="!HasTrailingSlash('$(PublishTargetDirectory)')">$(PublishTargetDirectory)\</PublishTargetDirectory>
       <publishUrl>$(PublishTargetDirectory)</publishUrl>
       <PublishDir>$(PublishTargetDirectory)</PublishDir>
     </PropertyGroup>
+  </Target>
 
+  <Target Name="SetPublishTargetDirectory" BeforeTargets="Build" DependsOnTargets="$(SetPublishTargetDirectoryDependsOn)" Condition="'$(DeployOnBuild)' == 'true'">
   </Target>
 
 </Project>
