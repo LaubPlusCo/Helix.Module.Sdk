@@ -33,6 +33,7 @@ BasicFileSystemPublish.targets
     <BasicFileSystemPublishDependsOn>
        $(BasicFileSystemPublishDependsOn);
       _EnsurePublishTargetDirectory;
+      _GatherFilesFromLegacyNugets;
       _GatherFilesForBasicFileSystemPublish;
       _ExcludeFilesFromBasicFileSystemPublish;
       _BasicFileSystemPublishCopyFiles;
@@ -77,13 +78,13 @@ BasicFileSystemPublish.targets
     <PropertyGroup>
       <OutDir Condition="!HasTrailingSlash('$(OutDir)')">$(OutDir)\</OutDir>
     </PropertyGroup>
-    
+
     <ItemGroup Condition="'$(PublishSolutionOutput)' != 'true'">
       <_FileSystemCopyPublishFiles Include="@(Content)" Condition="'%(CopyToPublishDirectory)' != 'Never'" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(PublishSolutionOutput)' == 'true'">
-      <_FileSystemCopyPublishFiles Include="$(OutDir)**\*.*" Exclude="$(OutDir)*.dll;$(OutDir)*.pdb"/>
+      <_FileSystemCopyPublishFiles Include="$(OutDir)**\*.*" Exclude="$(OutDir)*.dll;$(OutDir)*.pdb;$(OutDir)*.dll.config" />
     </ItemGroup>
 
     <ItemGroup>
@@ -118,6 +119,26 @@ BasicFileSystemPublish.targets
   </Target>
 
 
+
+  <!--
+  ***********************************************************************************************
+  TARGET : _GatherFilesFromLegacyNugets
+    
+      Gather 
+  ***********************************************************************************************
+ -->
+
+  <Target Name="_GatherFilesFromLegacyNugets" Condition="'$(SupportLegacyNugets)' == 'true'">
+    <ItemGroup>
+      <_LegacyNugetPackageContent Condition="%(PackageReference.CopyLegacyContentPath) != ''" Include="$(NugetPackageRoot)\%(PackageReference.Identity)\%(PackageReference.Version)\%(PackageReference.CopyLegacyContentPath)" />
+      <_FileSystemCopyPublishFiles Include="@(_LegacyNugetPackageContent)" />
+      <_LegacyNugetPackageAssemblies Condition="%(PackageReference.CopyLegacyAssembliesPath) != ''" Include="$(NugetPackageRoot)\%(PackageReference.Identity)\%(PackageReference.Version)\%(PackageReference.CopyLegacyAssembliesPath)" />
+      <_FileSystemCopyBinAssemblies Include="@(_LegacyNugetPackageAssemblies)" Condition="'$(UseBinFolder)' != 'false'" />
+      <_FileSystemCopyPublishFiles Include="@(_LegacyNugetPackageAssemblies)" Condition="'$(UseBinFolder)' == 'false'" />
+    </ItemGroup>
+  </Target>
+
+
   <!--
   ***********************************************************************************************
   TARGET : BasicFileSystemPublish
@@ -135,15 +156,9 @@ BasicFileSystemPublish.targets
     <Message Importance="High" Condition="'$(PublishSolutionOutput)' == 'true'" Text="$(MSBuildProjectName): Copying role type '$(SitecoreRoleType)' solution output for to '$(PublishTargetDirectory)'" />
     <Message Importance="High" Condition="'$(PublishSolutionOutput)' != 'true'" Text=" $(MSBuildProjectName): Copying project output to '$(PublishTargetDirectory)'" />
 
-    <Copy SourceFiles="@(_FileSystemCopyPublishFiles)" DestinationFiles="@(_FileSystemCopyPublishFiles->'$(PublishTargetDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" 
-          SkipUnchangedFiles="$(PublishSkipUnchangedFiles)" 
-          OverwriteReadOnlyFiles="true" />
-          
-    <Copy Condition="'$(UseBinFolder)' != 'false'"
-          SourceFiles="@(_FileSystemCopyBinAssemblies)"
-          DestinationFiles="@(_FileSystemCopyBinAssemblies->'$(PublishTargetDirectory)bin\%(RecursiveDir)%(Filename)%(Extension)')" 
-          SkipUnchangedFiles="$(PublishSkipUnchangedFiles)" 
-          OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="@(_FileSystemCopyPublishFiles)" DestinationFiles="@(_FileSystemCopyPublishFiles->'$(PublishTargetDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="$(PublishSkipUnchangedFiles)" OverwriteReadOnlyFiles="true" />
+
+    <Copy Condition="'$(UseBinFolder)' != 'false'" SourceFiles="@(_FileSystemCopyBinAssemblies)" DestinationFiles="@(_FileSystemCopyBinAssemblies->'$(PublishTargetDirectory)bin\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="$(PublishSkipUnchangedFiles)" OverwriteReadOnlyFiles="true" />
 
   </Target>
 
@@ -155,6 +170,22 @@ BasicFileSystemPublish.targets
   ***********************************************************************************************
  -->
   <Target Name="BasicFileSystemPublish" DependsOnTargets="$(BasicFileSystemPublishDependsOn)" Condition="'$(UseBasicFileSystemPublish)' == 'true' AND '$(PublishTargetDirectory)' != ''">
+  </Target>
+
+  <!--
+  ***********************************************************************************************
+  TARGET : _OutputLegacyNugetContent
+    
+      Copies legacy nuget content/assemblies to output dir.
+
+  ***********************************************************************************************
+ -->
+  <Target Name="_OutputLegacyNugetContent" DependsOnTargets="_GatherFilesFromLegacyNugets" BeforeTargets="Build" Condition="'$(SupportLegacyNugets)' == 'true' AND '$(UseBasicFileSystemPublish)' == 'true' AND '$(DeployOnBuild)' != 'true'">
+    <PropertyGroup>
+      <OutDir Condition="!HasTrailingSlash('$(OutDir)')">$(OutDir)\</OutDir>
+    </PropertyGroup>    
+    <Copy SourceFiles="@(_LegacyNugetPackageContent)" DestinationFiles="@(_LegacyNugetPackageContent->'$(OutDir)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="false" />
+    <Copy SourceFiles="@(_LegacyNugetPackageAssemblies)" DestinationFiles="@(_LegacyNugetPackageAssemblies->'$(OutDir)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="false" />
   </Target>
 
   <Target Name="_DeployOnBuild" DependsOnTargets="$(_DeployOnBuildDependsOn)" AfterTargets="Build" Condition="'$(UseBasicFileSystemPublish)' == 'true' AND '$(DeployOnBuild)'== 'true'">

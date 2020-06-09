@@ -1,46 +1,51 @@
 <Project>
-      <PropertyGroup>
-            <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-            <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-            <OutputType>Library</OutputType>
-            <Deterministic>false</Deterministic>
-            <PlatformTarget>x64</PlatformTarget>
-            <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
-          
-            <!-- Set solution-wide config file for binding redirects and remove potential build time warnings -->
-            <!--<AppConfig>$(SolutionDir)\build\Bindings.config</AppConfig>-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <Deterministic>false</Deterministic>
+    <PlatformTarget>x64</PlatformTarget>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
 
-            <!-- TransformWebConfigEnabled
+    <!-- Set solution-wide config file for binding redirects and remove potential build time warnings -->
+    <!--<AppConfig>$(SolutionDir)\build\Bindings.config</AppConfig>-->
+
+    <!-- TransformWebConfigEnabled
           Disables the default msbuild webconfig transformation target, 
           not related to Helix style transforms. Disabled for slight performance improvement.
           -->
-            <TransformWebConfigEnabled>False</TransformWebConfigEnabled>
-            <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-            <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-            <IgnoreTargetFrameworkAttributeVersionMismatch>true</IgnoreTargetFrameworkAttributeVersionMismatch>
-            <PackageAsSingleFile>false</PackageAsSingleFile>
-            
-            
-            <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
-            
-            <AddRazorSupportForMvc>false</AddRazorSupportForMvc>
+    <TransformWebConfigEnabled>False</TransformWebConfigEnabled>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <IgnoreTargetFrameworkAttributeVersionMismatch>true</IgnoreTargetFrameworkAttributeVersionMismatch>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
 
-            <MvcBuildViews>false</MvcBuildViews>
-            <NoWarn>$(NoWarn);42016,41999,42017</NoWarn>
 
-          <!-- UseBasicFileSystemPublish
+    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+
+    <AddRazorSupportForMvc>false</AddRazorSupportForMvc>
+
+    <MvcBuildViews>false</MvcBuildViews>
+    <NoWarn>$(NoWarn);42016,41999,42017</NoWarn>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    
+    <!-- SupportLegacyNugets
+          -->
+    <SupportLegacyNugets>true</SupportLegacyNugets>
+
+    <!-- UseBasicFileSystemPublish
             "Publish using a very basic file system publish.  -->
-          <UseBasicFileSystemPublish Condition=" '$(UseBasicFileSystemPublish)' == ''">true</UseBasicFileSystemPublish>
+    <UseBasicFileSystemPublish Condition=" '$(UseBasicFileSystemPublish)' == ''">true</UseBasicFileSystemPublish>
 
-          <!-- DeployOnBuild
+    <!-- DeployOnBuild
             Toogles automatic-publishing on builds, including from VS.
             
             If $(PublishSolutionOutput) == true then DeployOnBuild should only be set on contextual Project layer modules
             otherwise all modules should be deployed on build when using BasicFileSystemPublish. 
           -->
-          <PublishOnSingleBuilds Condition="'$(PublishOnSingleBuilds)' == '' OR '$(AutoPublish)' == 'true'">true</PublishOnSingleBuilds>
-          
-          <!-- PublishSolutionOutput
+    <PublishOnSingleBuilds Condition="'$(PublishOnSingleBuilds)' == '' OR '$(AutoPublish)' == 'true'">true</PublishOnSingleBuilds>
+
+    <!-- PublishSolutionOutput
             
             Speeds up full solution publishing by not publishing each project individually but instead publish a common output dir.
 
@@ -52,43 +57,43 @@
             If $(PublishSolutionOutput) == true then DeployOnBuild should only be set on contextual Project layer modules
             otherwise all modules should be deployed on build when using BasicFileSystemPublish. 
           -->
-          <PublishSolutionOutput Condition="'$(PublishSolutionOutput)' == '' AND '$(BuildingInsideVisualStudio)' != 'true' AND ('$(SolutionPath)'== '' OR '$(SolutionPath)' != '*Undefined*')">true</PublishSolutionOutput>
+    <PublishSolutionOutput Condition="'$(PublishSolutionOutput)' == '' AND '$(BuildingInsideVisualStudio)' != 'true' AND ('$(SolutionPath)'== '' OR '$(SolutionPath)' != '*Undefined*')">true</PublishSolutionOutput>
 
-          <!-- DeployOnBuild
+    <!-- DeployOnBuild
             Should be explicitly set in publishable contexts (Project layer modules). 
             
             For other platform projects use PublishOnSingleBuilds or AutoPublish to toggle if published.
           -->
-          <DeployOnBuild Condition="'$(DeployOnBuild)'== '' AND '$(PublishSolutionOutput)' != 'true' AND '$(PublishOnSingleBuilds)' == 'true'">true</DeployOnBuild>
+    <DeployOnBuild Condition="'$(DeployOnBuild)'== '' AND '$(PublishSolutionOutput)' != 'true' AND '$(PublishOnSingleBuilds)' == 'true'">true</DeployOnBuild>
 
-            <!-- CopyXmlTransformFiles
+    <!-- CopyXmlTransformFiles
           Toggles if xdt files should be copied (used for copying xdt's to use in docker image builds), 
           see ./build/targets/CopyXmlTransforms.targets for details -->
-          <CopyXmlTransformFiles Condition=" '$(UseBasicFileSystemPublish)' == ''">true</CopyXmlTransformFiles>
+    <CopyXmlTransformFiles Condition=" '$(UseBasicFileSystemPublish)' == ''">true</CopyXmlTransformFiles>
 
-            <!-- RunXmlTransformsOnPublish
+    <!-- RunXmlTransformsOnPublish
           Toggles transforming xml files post publishing, 
           see ./build/targets/Website.TransformXml.targets for details -->
-          <RunXmlTransforms Condition=" '$(RunXmlTransforms)' == ''">true</RunXmlTransforms>
+    <RunXmlTransforms Condition=" '$(RunXmlTransforms)' == ''">true</RunXmlTransforms>
 
-            <!-- XmlTransformFilePostfix
+    <!-- XmlTransformFilePostfix
           File postfix for transformation files (default: xdt)
           Name files [whatever].[{Configuration}|Any].xdt 
           Ex. web.config.debug.xdt or web.config.any.xdt -->
-          <XmlTransformFilePostfix Condition=" '$(XmlTransformFilePostfix)' == ''">xdt</XmlTransformFilePostfix>
+    <XmlTransformFilePostfix Condition=" '$(XmlTransformFilePostfix)' == ''">xdt</XmlTransformFilePostfix>
 
-            <!-- LegacyPreventCopyLocal
+    <!-- LegacyPreventCopyLocal
           Prevent assemblies and other files from packagereferences that should have been rivateassets=all|runtime 
           to be copied to package for publishing even though the package structure does not follow nuget conventions.  
           see ./build/targets/PreventCopyLocal.targets for details -->
-          <LegacyPreventCopyLocal Condition=" '$(LegacyPreventCopyLocal)' == ''">true</LegacyPreventCopyLocal>
+    <LegacyPreventCopyLocal Condition=" '$(LegacyPreventCopyLocal)' == ''">true</LegacyPreventCopyLocal>
 
-      </PropertyGroup>
+  </PropertyGroup>
 
-      <PropertyGroup Condition="'$(PublishSolutionOutput)' == 'true' OR '$(UseCommonOutputDirectory)' == 'true'">
-            <OutputPath>$(SolutionDir)Output\$(Configuration)\$(SitecoreRoleType)\</OutputPath>
-            <OutDir>$(OutputPath)</OutDir>
-            <UseCommonOutputDirectory>True</UseCommonOutputDirectory>
-      </PropertyGroup>
+  <PropertyGroup Condition="'$(PublishSolutionOutput)' == 'true' OR '$(UseCommonOutputDirectory)' == 'true'">
+    <OutputPath>$(SolutionDir)Output\$(Configuration)\$(SitecoreRoleType)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <UseCommonOutputDirectory>True</UseCommonOutputDirectory>
+  </PropertyGroup>
 
 </Project>

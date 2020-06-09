@@ -14,26 +14,48 @@ Platform.ProjectContent.props
 -->
 
 <Project>
+
+
+    <PropertyGroup>
+        <_DefaultContentTypes>
+        **\*.html;
+        **\*.cshtml;
+        **\*.aspx;
+        **\*.ascx;
+        **\*.ashx;
+        **\*.config;
+        **\*.manifest;
+        **\*.js;
+        **\*.json;
+        **\*.css;
+        **\*.xml;
+        **\*.txt;
+        **\*.html;
+        **\*.htm;
+        **\*.png;
+        **\*.jpg;
+        **\*.gif;
+        **\*.ico;
+        **\*.svg;
+        **\*.tiff;
+        **\*.eot;
+        **\*.ttf;
+        **\*.woff;
+        **\*.woff2
+        </_DefaultContentTypes>
+    </PropertyGroup>
+
     <ItemGroup>
-        <Content Include="**\*.config;**\*.manifest" Exclude="$(BaseIntermediateOutputPath)**\*.*">
+<!--
+        <LegacyPackageReferenceContent Condition="'%(PackageReference.GeneratePathProperty)' == 'true'" Include="$(NugetPackageRoot)\%(PackageReference.FileName)\%(PackageReference.Version)\%(PackageReference.LegacyNugetContentPath)" />
+
+        <Content Include="@(LegacyPackageReferenceContent)" Exclude="$(BaseIntermediateOutputPath)**\*.*;">
             <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
             <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
-
-        <Content Include="**\*.html;**\*.cshtml;**\*.aspx;**\*.ascx;**\*.ashx" Exclude="$(BaseIntermediateOutputPath)**\*.*">
-            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
-            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-
-        <Content Include="**\*.js;**\*.json;**\*.css;**\*.xml;**\*.txt;**\*.html;**\*.htm" Exclude="$(BaseIntermediateOutputPath)**\*.*;$(ProjectDir)Properties\**\*">
-            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
-            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-
-        <Content Include="**\*.png;**\*.jpg;**\*.gif;**\*.ico;**\*.svg;**\*.tiff;**\*.eot;**\*.ttf;**\*.woff;**\*.woff2" Exclude="$(BaseIntermediateOutputPath)**\*.*">
+-->
+        <Content Include="$(_DefaultContentTypes)" Exclude="$(BaseIntermediateOutputPath)**\*.*;">
             <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
             <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

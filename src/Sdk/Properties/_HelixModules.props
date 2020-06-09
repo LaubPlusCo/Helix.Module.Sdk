@@ -26,10 +26,10 @@
         <AdditionalPropertiesDir>$([MSBuild]::EnsureTrailingSlash('$(AdditionalSitecoreRolePropertiesDir)'))</AdditionalPropertiesDir>
     </PropertyGroup>
 
-    <!-- Import role type specific props from solution -->
+    <!-- Import any role type specific props from solution -->
     <Import Project="$(AdditionalPropertiesDir)$(SitecoreRoleType).props" Condition="'$(AdditionalPropertiesDir)' != '' AND '$(SitecoreRoleType)' != '' AND exists('$(AdditionalPropertiesDir)$(SitecoreRoleType).props')" />
 
-    <!-- Import role type specific props from user -->
+    <!-- Override role type specific properties using .user file if it exists -->
     <Import Project="$(AdditionalPropertiesDir)$(SitecoreRoleType).props.user" Condition="'$(AdditionalPropertiesDir)' != '' AND '$(SitecoreRoleType)' != '' AND exists('$(AdditionalPropertiesDir)$(SitecoreRoleType).props.user')" />
 
     <!-- Import role type specific props from sdk -->

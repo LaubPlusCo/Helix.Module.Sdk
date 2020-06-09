@@ -52,7 +52,7 @@
 
   <Target Name="_SetPublishTargetDirectory">
     <PropertyGroup>
-      <PublishTargetDirectory Condition="'%(_CurrentPublishPath.Path)' !=''">%(_CurrentPublishPath.Path)</PublishTargetDirectory>
+      <PublishTargetDirectory Condition="'%(_CurrentPublishPath.Path)' != ''">%(_CurrentPublishPath.Path)</PublishTargetDirectory>
     </PropertyGroup>
     <Warning Condition="'$(PublishTargetDirectory)' == ''" Text="$(MSBuildProjectFile): Could not lookup PublishTargetDirectory for '$(PublishTarget)'" />
   </Target>

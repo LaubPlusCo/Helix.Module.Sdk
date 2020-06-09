@@ -60,6 +60,7 @@ You can make your own SitecoreRoleType specific for your solution:
 Example:
 
 In a .csproj file set the SitecoreRoleType property to the name of your new role type
+
 ```xml
 <SitecoreRoleType>myrole</SitecoreRoleType>
 ```  
@@ -67,6 +68,7 @@ In a .csproj file set the SitecoreRoleType property to the name of your new role
 Add a file $(AdditionalSitecoreRolePropertiesDir)\myrole.props
 
 Example of how myrole.props could look for a dotnetcore 3.1 web app
+
 ```xml
 <Project>
     <PropertyGroup>
@@ -98,6 +100,7 @@ Example of how myrole.props could look for a dotnetcore 3.1 web app
 ```  
 
 In Solution.props add a publish path for the role type:
+
 ```xml
  <ItemGroup>
     ...
@@ -124,7 +127,7 @@ Additional role type specific user properties
     (ex. from files called Platform.props.user, Identity.props.user, XConnect.props.user)
 Additional role type specific properties from this SDK
 
-Solution Directory.Build.targets
+Directory.Build.targets
 SDK targets and MS Common targets
 
 See ... for a detailed msbuild load order overview. Above high-level overview is just to support the use of this SDK.  
