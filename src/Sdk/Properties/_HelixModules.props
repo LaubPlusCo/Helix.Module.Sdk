@@ -8,7 +8,7 @@
         <SolutionDir Condition="'$(SolutionDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), Solution.props))</SolutionDir>
         <SolutionDir Condition="'$(SolutionDir)' != ''">$([MSBuild]::EnsureTrailingSlash('$(SolutionDir)'))</SolutionDir>
         <_SolutionBuildPropertiesFile Condition="'$(_SolutionBuildPropertiesFile)' == '' AND '$(SolutionDir)' != '' AND exists('$(SolutionDir)Solution.props')">$(SolutionDir)Solution.props</_SolutionBuildPropertiesFile>
-        <_UserSolutionBuildPropertiesFile Condition="'$(_SolutionBuildPropertiesFile)' == ''">$(_SolutionBuildPropertiesFile).user</_UserSolutionBuildPropertiesFile>
+        <_UserSolutionBuildPropertiesFile Condition="'$(_SolutionBuildPropertiesFile)' != ''">$(_SolutionBuildPropertiesFile).user</_UserSolutionBuildPropertiesFile>
         <SitecoreRoleType Condition="'$(SitecoreRoleType)' == '' and $(TargetFramework.StartsWith('net4'))">platform</SitecoreRoleType>
         <SitecoreRoleType Condition="'$(SitecoreRoleType)' == ''">none</SitecoreRoleType>
         <_SdkRoleTypePropertiesDir>$(MSBuildThisFileDirectory)$(SitecoreRoleType)\</_SdkRoleTypePropertiesDir>
