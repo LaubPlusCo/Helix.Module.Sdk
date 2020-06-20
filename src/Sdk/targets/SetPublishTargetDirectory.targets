@@ -65,7 +65,7 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="SetPublishTargetDirectory" BeforeTargets="Build" DependsOnTargets="$(SetPublishTargetDirectoryDependsOn)" Condition="'$(DeployOnBuild)' == 'true'">
+  <Target Name="SetPublishTargetDirectory" BeforeTargets="PrepareForBuild" DependsOnTargets="$(SetPublishTargetDirectoryDependsOn)" Condition="'$(DeployOnBuild)' == 'true'">
   </Target>
 
 </Project>

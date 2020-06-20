@@ -5,7 +5,7 @@
     <AddRazorSupportForMvc  Condition="'$(AddRazorSupportForMvc)' == ''">true</AddRazorSupportForMvc>
     <CopyXmlTransformFiles  Condition="'$(CopyXmlTransformFiles)' == ''">false</CopyXmlTransformFiles>
     <RunXmlTransforms  Condition="'$(RunXmlTransforms)' == ''">false</RunXmlTransforms>
-    <UseBasicFileSystemPublish  Condition="'$(UseBasicFileSystemPublish)' == ''">false</UseBasicFileSystemPublish>
+    <UseFileSystemCopyPublish  Condition="'$(UseFileSystemCopyPublish)' == ''">false</UseFileSystemCopyPublish>
     <WebPublishMethod Condition="'$(WebPublishMethod)' == ''">FileSystem</WebPublishMethod>
     <PublishProvider  Condition="'$(PublishProvider)' == ''">FileSystem</PublishProvider>
     <LastUsedBuildConfiguration Condition="'$(LastUsedBuildConfiguration)' == ''">Release</LastUsedBuildConfiguration>

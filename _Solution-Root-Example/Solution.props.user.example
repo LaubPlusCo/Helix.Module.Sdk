@@ -1,0 +1,27 @@
+<!--
+***********************************************************************************************
+
+    Solution.props
+
+
+
+                                                                      [Anders Laub // Laub+Co]
+***********************************************************************************************
+-->
+
+
+<Project>
+
+    <PropertyGroup>
+
+        <!-- PublishTargetEnvironment
+            
+            Optional property to dynamically set different publish target directories dependent on environment
+
+        -->
+        <PublishTargetEnvironment>Local</PublishTargetEnvironment>
+        
+        <PublishRootPath Condition="'$(PublishTargetEnvironment)' == 'Local'">C:\Websites\solution\test\</PublishRootPath>
+
+    </PropertyGroup>
+</Project>  

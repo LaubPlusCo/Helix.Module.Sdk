@@ -1,0 +1,44 @@
+<!-- 
+***********************************************************************************************
+    Platform.props
+
+        Additional msbuild properties for SitecoreRoleType == Platform
+
+                                                                      [Anders Laub // Laub+Co]
+***********************************************************************************************
+-->
+
+<Project>
+
+
+  <!-- Example; 
+    
+            Add common package references to all projects targeting SitecoreRoleType  == 'Platform'
+            
+            (Easy upgrade all references by changing SitecoreVersion in solution.props) 
+            
+        Note; 
+                $(SitecorePlatformVersion) Cannot be used for prerelease packages when using nuget < v5.6 
+                since previous nuget versions does not fully support SemVer 2.0  
+                dotnet 3.1 cli installs with nuget v5.5 - so $(SitecoreVersion) first useful 
+                if the sc packages are not in prerelease. 
+
+            -->
+
+  <PropertyGroup>
+
+    <AppConfig>$(SolutionDir)_build\AssemblyBindings.config</AppConfig>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+    
+
+  </PropertyGroup>
+
+
+
+  <ItemGroup>
+
+    <PackageReference Include="Sitecore.Kernel" Version="$(SitecorePlatformVersion)" ExcludeAssets="runtime" />
+    <PackageReference Include="Sitecore.Mvc" Version="$(SitecorePlatformVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+</Project>  

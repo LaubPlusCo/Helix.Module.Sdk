@@ -77,7 +77,7 @@ Example of how myrole.props could look for a dotnetcore 3.1 web app
         <AddRazorSupportForMvc  Condition="'$(AddRazorSupportForMvc)' == ''">true</AddRazorSupportForMvc>
         <CopyXmlTransformFiles  Condition="'$(CopyXmlTransformFiles)' == ''">false</CopyXmlTransformFiles>
         <RunXmlTransforms  Condition="'$(RunXmlTransforms)' == ''">false</RunXmlTransforms>
-        <UseBasicFileSystemPublish  Condition="'$(UseBasicFileSystemPublish)' == ''">false</UseBasicFileSystemPublish>
+        <UseFileSystemPublish  Condition="'$(UseFileSystemPublish)' == ''">false</UseFileSystemPublish>
         <WebPublishMethod Condition="'$(WebPublishMethod)' == ''">FileSystem</WebPublishMethod>
         <PublishProvider  Condition="'$(PublishProvider)' == ''">FileSystem</PublishProvider>
         <LastUsedBuildConfiguration Condition="'$(LastUsedBuildConfiguration)' == ''">Release</LastUsedBuildConfiguration>

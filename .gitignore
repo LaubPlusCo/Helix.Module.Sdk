@@ -1,1 +1,2 @@
 *.nupkg
+!_Solution-Root-Example/**/*.nupkg

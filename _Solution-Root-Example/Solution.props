@@ -1,0 +1,102 @@
+<!--
+***********************************************************************************************
+
+    Solution.props
+
+
+
+                                                                      [Anders Laub // Laub+Co]
+***********************************************************************************************
+-->
+
+
+<Project>
+
+    <PropertyGroup>
+
+        <!-- PublishTargetEnvironment
+            
+            Optional property to dynamically set different publish target directories dependent on environment
+
+        -->
+        <PublishTargetEnvironment Condition="'$(PublishTargetEnvironment)' == ''">Local</PublishTargetEnvironment>
+
+        <!-- SitecorePlatformVersion
+          Global version number for common references. 
+        -->
+        <SitecorePlatformVersion Condition="'$(SitecorePlatformVersion)' == ''">9.3.0</SitecorePlatformVersion>
+        <CompilerVersion Condition="'$(CompilerVersion)' == ''">3.6.0</CompilerVersion>
+
+        <!-- AdditionalSitecoreRolePropertiesDir: 
+          Override root directory for additional msbuild properties files for individual Sitecore role types. 
+          
+                Used to import additional props files named $(SitecoreRoleType).props,
+                Examples: .\_build\Platform.props, .\_build\Identity.props
+
+          Default: $(SolutionDir)
+
+          -->
+        <AdditionalSitecoreRolePropertiesDir>$(SolutionDir)_build\</AdditionalSitecoreRolePropertiesDir>
+
+        <!-- PublishRootPath
+               Root directory for publish output
+                
+            Use conditions for different environment settings.
+        
+                Ex.    
+        
+        <PublishRootPath Condition="'$(PublishTargetEnvironment)' == '' OR '$(PublishTargetEnvironment)' == 'Docker'">$(SolutionDir)docker\deploy\</PublishRootPath>
+        <PublishRootPath Condition="'$(PublishTargetEnvironment)' == 'AzureDevOps'">$(build.artifactStagingDirectory)\</PublishRootPath>
+        <PublishRootPath Condition="'$(PublishTargetEnvironment)' == 'IIS'">C:\Inetpub\wwwroot\</PublishRootPath>
+
+        Or set the property global by adding /p:PublishRootPath=" .. "  on cli builds or 
+            -->
+        <PublishRootPath Condition="'$(PublishTargetEnvironment)' == '' OR '$(PublishTargetEnvironment)' == 'Docker'">$(SolutionDir)docker\deploy\</PublishRootPath>
+        <PublishRootPath Condition="'$(PublishTargetEnvironment)' == 'AzureDevOps'"></PublishRootPath>
+        <PublishRootPath Condition="'$(PublishTargetEnvironment)' == 'Local'">C:\Websites\solution\</PublishRootPath>
+    </PropertyGroup>
+
+    <!-- Publish target Paths
+            The path used for publishing, dev builds should have instance roots set or container shared volumes when running on Docker.
+            For CI builds you can set the  should set this property to package root folders, f. ex. $(bu)
+            The msbuild <PublishTarget> is used to determine the publish path.
+             
+            PublishTarget fallbacks to SitecoreRoleType (default; "platform" when target framework net4x, otherwise default "none")
+    
+        -->
+    <ItemGroup>
+        <_PublishPaths Include="platform">
+            <Path Condition="'$(PublishTargetEnvironment)' != 'Docker'">$(PublishRootPath)website\</Path>
+            <Path Condition="'$(PublishTargetEnvironment)' == 'Docker'">$(PublishRootPath)platform\</Path>
+        </_PublishPaths>
+
+        <_PublishPaths Include="identity">
+            <Path>$(PublishRootPath)identity\</Path>
+        </_PublishPaths>
+
+        <!-- Example on targeting different paths dependent on publish target environment.. -->
+        <_PublishPaths Include="xconnect-indexing">
+            <Path Condition="'$(PublishTargetEnvironment)' != 'Local'">$(PublishRootPath)\xconnect-worker\</Path>
+            <Path Condition="'$(PublishTargetEnvironment)' == 'Local'">$(PublishRootPath)\xconnect\App_Data\jobs\continuous\IndexWorker</Path>
+        </_PublishPaths>
+
+        <!-- Example on targeting different paths dependent on publish target environment.. -->
+        <_PublishPaths Include="xconnect-collection">
+            <Path Condition="'$(PublishTargetEnvironment)' != 'Local'">$(PublishRootPath)\xconnect-worker\</Path>
+            <Path Condition="'$(PublishTargetEnvironment)' == 'Local'">$(PublishRootPath)\xconnect\App_Data\jobs\continuous\collection</Path>
+        </_PublishPaths>
+
+                <!-- Example on targeting different paths dependent on publish target environment.. -->
+        <_PublishPaths Include="xconnect-automationengine">
+            <Path Condition="'$(PublishTargetEnvironment)' != 'Local'">$(PublishRootPath)\xconnect-worker\</Path>
+            <Path Condition="'$(PublishTargetEnvironment)' == 'Local'">$(PublishRootPath)\xconnect\App_Data\jobs\continuous\automationengine</Path>
+        </_PublishPaths>
+    </ItemGroup>
+
+    <!-- Compiler; Reference Roslyn in all projects -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Net.Compilers" Version="$(CompilerVersion)">
+            <IncludeAssets>runtime; build; native; contentfiles;</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+</Project>  

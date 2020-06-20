@@ -15,7 +15,6 @@ Platform.ProjectContent.props
 
 <Project>
 
-
     <PropertyGroup>
         <_DefaultContentTypes>
         **\*.html;
@@ -46,16 +45,8 @@ Platform.ProjectContent.props
     </PropertyGroup>
 
     <ItemGroup>
-<!--
-        <LegacyPackageReferenceContent Condition="'%(PackageReference.GeneratePathProperty)' == 'true'" Include="$(NugetPackageRoot)\%(PackageReference.FileName)\%(PackageReference.Version)\%(PackageReference.LegacyNugetContentPath)" />
 
-        <Content Include="@(LegacyPackageReferenceContent)" Exclude="$(BaseIntermediateOutputPath)**\*.*;">
-            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
-            <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
--->
-        <Content Include="$(_DefaultContentTypes)" Exclude="$(BaseIntermediateOutputPath)**\*.*;">
+        <Content Include="$(_DefaultContentTypes)" Exclude="$(BaseIntermediateOutputPath)**\*.*;**\web.config">
             <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' == 'true'">PreserveNewest</CopyToOutputDirectory>
             <CopyToOutputDirectory Condition="'$(PublishSolutionOutput)' != 'true'">Never</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

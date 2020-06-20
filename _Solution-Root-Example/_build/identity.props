@@ -1,0 +1,19 @@
+<!--
+***********************************************************************************************
+
+    Identity.props
+
+        Additional msbuild properties for SitecoreRoleType == Identity
+
+
+
+                                                                      [Anders Laub // Laub+Co]
+***********************************************************************************************
+-->
+
+<Project>
+  <PropertyGroup>
+    <UseBasicFileSystemPublish>false</UseBasicFileSystemPublish>
+    <DeployOnBuild>false</DeployOnBuild>
+  </PropertyGroup>
+</Project>  

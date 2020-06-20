@@ -1,0 +1,18 @@
+<!--
+***********************************************************************************************
+
+    XConnect-worker.props
+
+        Additional msbuild properties for SitecoreRoleType == XConnect-worker (webjob)
+
+
+
+                                                                      [Anders Laub // Laub+Co]
+***********************************************************************************************
+-->
+
+<Project>
+
+  <Import Project="XConnect.props" />
+
+</Project>  
