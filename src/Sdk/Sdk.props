@@ -1,6 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
+    <UseSharedCompilation>true</UseSharedCompilation>
     <CustomBeforeMicrosoftCommonTargets>$(MSBuildThisFileDirectory)Properties\_HelixModules.props</CustomBeforeMicrosoftCommonTargets>
   </PropertyGroup>
 

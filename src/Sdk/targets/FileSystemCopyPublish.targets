@@ -81,7 +81,7 @@ FileSystemCopyPublish.targets
     </PropertyGroup>
 
     <ItemGroup Condition="'$(PublishSolutionOutput)' != 'true'">
-      <_FileSystemCopyPublishFiles Include="@(Content)" Condition="'%(CopyToPublishDirectory)' != 'Never'" />
+      <_FileSystemCopyPublishFiles Include="@(Content)" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(PublishSolutionOutput)' == 'true'">

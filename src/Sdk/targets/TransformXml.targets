@@ -27,17 +27,25 @@ Website.TransformXml.targets
 ***********************************************************************************************
 -->
 
-<Project>
-  <UsingTask TaskName="TransformXml" 
-              AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(MSBuildToolsVersion)\Web\Microsoft.Web.Publishing.Tasks.dll"
-              Condition="'$(RunXmlTransforms)' != 'false' and exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(MSBuildToolsVersion)\Web\Microsoft.Web.Publishing.Tasks.dll')" />
+<Project Condition="'$(RunXmlTransforms)' == 'true'">
 
-  <Target Name="RunTransforms" AfterTargets="WebPublish;Publish" Condition="'$(RunXmlTransforms)' != 'false'">
-    
+  <PropertyGroup>
+    <_VisualStudioTransformTaskAvailable>false</_VisualStudioTransformTaskAvailable>
+    <_VisualStudioTransformTaskAvailable Condition="exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll')">true</_VisualStudioTransformTaskAvailable>
+  </PropertyGroup>
+
+  <UsingTask TaskName="TransformXml" 
+              AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll"
+              Condition="'$(RunXmlTransforms)' == 'true' and '$(_VisualStudioTransformTaskAvailable)' == 'true'" />
+
+  <Target  Name="RunTransforms" Condition="'$(RunXmlTransforms)' == 'true' AND '$(_VisualStudioTransformTaskAvailable)' != 'true'">
+    <Message Importance="High" Text="The TransformXml task require Visual Studio build tools to be available. Use the VSBuild task in DevOps pipelines." />
+  </Target>
+
+  <Target Name="RunTransforms" Condition="'$(RunXmlTransforms)' == 'true' AND '$(_VisualStudioTransformTaskAvailable)' == 'true'">
     <PropertyGroup>
       <TransformXmlDestinationRootDir Condition="'$(TransformXmlDestinationRootDir)' == ''">$(PublishTargetDirectory)</TransformXmlDestinationRootDir>
     </PropertyGroup>
-
     <ItemGroup>
       <SourceTransformFiles Include="**\*.$(Configuration).$(XmlTransformFilePostfix);**\*.Any.$(XmlTransformFilePostfix)" Condition="'$(XmlTransformSkipBuildConfig)'!='true'" Exclude="$(BaseIntermediateOutputPath)**\*.*" />
       <SourceTransformFiles Include="**\*.$(XmlTransformInstanceRole).$(XmlTransformFilePostfix)" Condition="'$(XmlTransformInstanceRole)'!=''" Exclude="$(BaseIntermediateOutputPath)**\*.*" />

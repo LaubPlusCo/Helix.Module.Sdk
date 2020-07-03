@@ -14,11 +14,11 @@
         <_SdkRoleTypePropertiesDir>$(MSBuildThisFileDirectory)$(SitecoreRoleType)\</_SdkRoleTypePropertiesDir>
     </PropertyGroup>
 
-    <!-- Import solution specific props file if it exists  -->
-    <Import Project="$(_SolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != ''" />
-
-    <!-- Override solution properties using .user file if it exists -->
+    <!-- Set solution properties using .user file if exist -->
     <Import Project="$(_UserSolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != '' AND exists('$(_UserSolutionBuildPropertiesFile)')" />
+
+    <!-- Import solution specific props file if it exists; -->
+    <Import Project="$(_SolutionBuildPropertiesFile)" Condition="$(_SolutionBuildPropertiesFile) != ''" />
 
     <!-- Ensure AdditionalPropertiesDir property is set-->
     <PropertyGroup>
