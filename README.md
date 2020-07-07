@@ -8,7 +8,7 @@ MSBuild extensions to support SDK-style project formats and multi-targeting in S
 To create a SDK nuget: 
 
 1. Bump up version number in Helix.Module.Build.Sdk.nuspec
-2. Run `nuget pack` from terminal. 
+2. Run `nuget pack` from terminal.  
 
 Copy the generated nupkg to your solution.
 
@@ -33,8 +33,8 @@ Add the folder as source in thesolution nuget.config
 
 ```xml
 <Project Sdk="....">
-    <!-- Update with correct SDK version number -->
-    <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.13.5" />
+    <!-- Update with the correct SDK version number -->
+    <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.15.7" />
     ...
     <PropertyGroup>
     ...
@@ -53,7 +53,7 @@ Add a file named Solution.props in the solution root folder for Solution wide pr
 - ....
 - rendering
 
-More to come... 
+More to come...  
 
 You can make your own SitecoreRoleType specific for your solution:
 
