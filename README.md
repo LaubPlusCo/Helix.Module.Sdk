@@ -1,12 +1,26 @@
 # Helix.Module.Sdk  
+MSBuild extensions to support SDK-style project formats and multi-targeting in Sitecore Helix solutions.  
 
-MSBuild extensions to support SDK-style project formats and multi-targeting in Sitecore Helix solutions.
+The Helix Module build SDK aims to simplify:
 
+* Keeping all modules for any instance roles within the same Visual Studio solution
+* Deploying to different instance roles with different target frameworks etc. from one solution using only msbuild
+* Deploying and packaging to multiple environments that has different Sitecore topologies using only msbuild
+* Remove platform module's dependency on Visual Studio's WebApplication.WebPublish target
+
+The latter enable developers to work solely in Visual Studio code.
+
+> **Disclaimer**  
+> This build SDK started as a proof-of-concept and is still very much work in progress.   
+> The build SDK is already being used on "live" solutions however using it is your own responsibility. It is still in a pre-release state which means you should expect features to be missing, some manual setup, potential bugs and perhaps breaking changes in upcoming versions.  
+
+
+> **Please comment and contribute!**
 
 ## Usage  
-_The SDK is not yet made available on Nuget.org so it has to be referenced with version number from a separate nuget feed for now._
+_The SDK is not yet made available on Nuget.org so it has to be referenced with full version number using a separate nuget feed for now._
 
-- Download the latest nupkg from Releases
+- Download the latest nupkg from [Releases](https://github.com/LaubPlusCo/Helix.Module.Sdk/releases)
 - Copy the nupkg to a nuget feed accessible by your solution.
 
 > It is recommended to use a local folder as a nuget feed and keep the nupkg under source control.
@@ -21,12 +35,12 @@ _The SDK is not yet made available on Nuget.org so it has to be referenced with 
 >  
 
 - _Update your .csproj files to SDK style format if not done already_
-- Add the following line in your .csproj files.
+- Add the following to your .csproj files.
 
 ```xml
 <Project Sdk="....">
     <!-- Update with the correct SDK version number -->
-    <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.15.7" />
+    <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.16" />
     ...
     <PropertyGroup>
     ...
@@ -35,9 +49,23 @@ _The SDK is not yet made available on Nuget.org so it has to be referenced with 
     </PropertyGroup>
 ```  
 
-Add a file named Solution.props in the solution root folder for Solution wide properties such as publish paths.
+Add a file named Solution.props in the solution root folder for Solution wide properties such as publish paths.  
 
-## Building / Extending / Contributing  
+For more details please see the [Solution Example](https://github.com/LaubPlusCo/Helix.Module.Sdk/tree/master/_Solution-Example)
+
+### Publish Paths
+
+... insert documentation here ...
+
+### Supported Sitecore Role Types
+
+... insert documentation here ...
+
+- platform
+- ...
+- rendering
+
+## Building | Contributing  
 
 Ensure that you have nuget version 15.x or later added to your PATH env variable. Download [nuget.exe from here](https://www.nuget.org/downloads)
 
@@ -46,17 +74,7 @@ To create a nuget with the build SDK:
 0. (optional) Increment the version number in Helix.Module.Build.Sdk.nuspec
 1. Run `nuget pack` from terminal.  
 
-### Publish Paths
-
-... more documentation to come...
-
-### Support Sitecore Role Types
-
-- platform
-- ....
-- rendering
-
-... more documentation to come...  
+## Defining new _Role Types_
 
 You can also make your own SitecoreRoleType specific for your solution:
 
@@ -112,6 +130,8 @@ In Solution.props add a publish path for the role type:
     </_PublishPaths>
     ...
 ```
+
+_Please contribute missing role types that you create back to the SDK by forking this repo and create a PR_
 
 ### MSBuild Properties load order  
 
