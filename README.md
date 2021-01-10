@@ -86,7 +86,7 @@ In a .csproj file set the SitecoreRoleType property to the name of your new role
 <SitecoreRoleType>myrole</SitecoreRoleType>
 ```  
 
-Add a file $(AdditionalSitecoreRolePropertiesDir)\myrole.props
+Add a new file $(AdditionalSitecoreRolePropertiesDir)\myrole.props (for default setup this would be .\_build\myrole.props)
 
 Example of how myrole.props could look like for a dotnetcore 3.1 web app
 
