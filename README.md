@@ -143,13 +143,13 @@ The SDK injects itself before `Microsoft.Common.Targets` is loaded to ensure tha
 
 - Directory.Build.Props 
 - SDK Properties and MS Common props
-- Project file properties
-- Solution.props
-- Solution.props.user
-- Additional role type specific solution properties
+  - Project file properties
+  - Solution.props
+  - Solution.props.user
+  - Additional role type specific solution properties
     (ex. from files called Platform.props, Identity.props, XConnect.props)
-- Additional role type specific user properties
+  - Additional role type specific user properties
     (ex. from files called Platform.props.user, Identity.props.user, XConnect.props.user)
-- Additional role type specific properties from this SDK
+  - Additional role type specific properties from this SDK
 - Directory.Build.targets
 - SDK targets and MS Common targets 
