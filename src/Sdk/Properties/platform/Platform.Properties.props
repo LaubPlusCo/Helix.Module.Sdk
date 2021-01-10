@@ -22,6 +22,11 @@
     <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 
+    <!-- Project type guids and AddItemTemplatesGuid for VS item templates
+          -->
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <AddItemTemplatesGuid>{349C5851-65DF-11DA-9384-00065B846F21}</AddItemTemplatesGuid>
+
     <MvcBuildViews>false</MvcBuildViews>
     <NoWarn>$(NoWarn);42016,41999,42017</NoWarn>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
