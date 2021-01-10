@@ -78,7 +78,7 @@ To create a nuget with the build SDK:
 
 ## Defining new _Role Types_
 
-You can also make your own SitecoreRoleType specific for your solution:
+You can  make your own SitecoreRoleType either specific for your solution or one of the several role types that are not part of the sdk yet:
 
 Example:
 
@@ -88,9 +88,9 @@ In a .csproj file set the SitecoreRoleType property to the name of your new role
 <SitecoreRoleType>myrole</SitecoreRoleType>
 ```  
 
-Add a new file $(AdditionalSitecoreRolePropertiesDir)\myrole.props (for default setup this would be .\_build\myrole.props)
+Add a new file $(AdditionalSitecoreRolePropertiesDir)\myrole.props (default this would be .\_build\myrole.props)
 
-Example of how myrole.props could look like for a dotnetcore 3.1 web app
+Below shows an example of how the myrole.props file could look like for a dotnetcore 3.1 web app
 
 ```xml
 <Project>
@@ -133,7 +133,7 @@ In Solution.props add a publish path for the role type:
     ...
 ```
 
-_Please contribute missing role types that you create back to the SDK by forking this repo, add the props file in a folder under ./src/Sdk/Properties/$(name-of-roletype), commit it and create a PR_
+_Please contribute any missing Sitecore role types that you create back to the SDK by forking this repo, add the props file in a folder under ./src/Sdk/Properties/$(name-of-roletype), commit it and create a PR. Alternately ping me on Community Slack for direct write access to this repo_
 
 ### MSBuild Properties load order  
 
