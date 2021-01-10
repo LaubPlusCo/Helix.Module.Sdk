@@ -24,7 +24,7 @@ _The SDK is not yet made available on Nuget.org so it has to be referenced with 
 - Copy the nupkg to a nuget feed accessible by your solution.
 
 > It is recommended to use a local folder as a nuget feed and keep the nupkg under source control.
-> F.ex. .\_build\nugets and add the folder as source in the solution nuget.config (see working example in .\Solution-Example folder)
+> F.ex. .\_build\nugets and add the folder as source in the solution nuget.config (see [example in .\Solution-Example folder(https://github.com/LaubPlusCo/Helix.Module.Sdk/blob/master/_Solution-Example/nuget.config)])
 >
 > ```xml
 >  <packageSources>
