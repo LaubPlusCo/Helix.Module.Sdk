@@ -19,12 +19,12 @@
             Optional property to dynamically set different publish target directories dependent on environment
 
         -->
-        <PublishTargetEnvironment Condition="'$(PublishTargetEnvironment)' == ''">Local</PublishTargetEnvironment>
+        <PublishTargetEnvironment Condition="'$(PublishTargetEnvironment)' == ''">Docker</PublishTargetEnvironment>
 
         <!-- SitecorePlatformVersion
           Global version number for common references. 
         -->
-        <SitecorePlatformVersion Condition="'$(SitecorePlatformVersion)' == ''">9.3.0</SitecorePlatformVersion>
+        <SitecorePlatformVersion Condition="'$(SitecorePlatformVersion)' == ''">10.0.1</SitecorePlatformVersion>
         <CompilerVersion Condition="'$(CompilerVersion)' == ''">3.6.0</CompilerVersion>
 
         <!-- AdditionalSitecoreRolePropertiesDir: 

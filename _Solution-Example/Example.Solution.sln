@@ -1,0 +1,56 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Foundation", "Foundation", "{DE783123-F4C0-4832-940D-7D1E9B974208}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{77D83205-FC3C-48AF-AD9C-454077496234}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feature", "Feature", "{EC226888-893E-4DB7-82FC-3FC88E8E52B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Build", "_Build", "{3C9F1421-DF87-43BD-8E93-520AFCF87F54}"
+	ProjectSection(SolutionItems) = preProject
+		_build\AssemblyBindings.config = _build\AssemblyBindings.config
+		_build\identity.props = _build\identity.props
+		nuget.config = nuget.config
+		_build\platform.props = _build\platform.props
+		Solution.props = Solution.props
+		_build\xconnect-processing.props = _build\xconnect-processing.props
+		_build\xconnect-worker.props = _build\xconnect-worker.props
+		_build\xconnect.props = _build\xconnect.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{959163F5-6C56-4FFB-88B3-126423664B4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{041AE768-2075-400E-A4DE-547A6E7B9415}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Docker", "_Docker", "{EF52508A-7815-46B2-BE1C-EBF0D92E2A4B}"
+	ProjectSection(SolutionItems) = preProject
+		Docker\.env = Docker\.env
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "src\Feature\Example\platform\Example.csproj", "{E12220B4-BF8E-407F-BAD6-A2C553927911}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E12220B4-BF8E-407F-BAD6-A2C553927911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E12220B4-BF8E-407F-BAD6-A2C553927911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E12220B4-BF8E-407F-BAD6-A2C553927911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E12220B4-BF8E-407F-BAD6-A2C553927911}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{041AE768-2075-400E-A4DE-547A6E7B9415} = {3C9F1421-DF87-43BD-8E93-520AFCF87F54}
+		{E12220B4-BF8E-407F-BAD6-A2C553927911} = {EC226888-893E-4DB7-82FC-3FC88E8E52B0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A43AB78-1F39-430E-A489-C4CC5BACACAB}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Caching.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.WindowsAzure.Storage.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.Configuration.6.0.1304.0\lib\NET45
+	EndGlobalSection
+EndGlobal

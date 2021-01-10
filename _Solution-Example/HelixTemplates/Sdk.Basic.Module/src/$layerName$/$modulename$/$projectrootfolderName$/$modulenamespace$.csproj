@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.15.7" />
+  <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.16" />
   <PropertyGroup>
     <TargetFramework>$netframeworkversion$</TargetFramework>
     <RootNamespace>$moduleNamespace$</RootNamespace>

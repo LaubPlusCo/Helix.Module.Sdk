@@ -3,32 +3,24 @@
 MSBuild extensions to support SDK-style project formats and multi-targeting in Sitecore Helix solutions.
 
 
-## Extending / Contributing
-
-To create a SDK nuget: 
-
-1. Bump up version number in Helix.Module.Build.Sdk.nuspec
-2. Run `nuget pack` from terminal.  
-
-Copy the generated nupkg to your solution.
-
-Ex. 
-
-Copy nuget to .\_build\nugets
-
-Add the folder as source in thesolution nuget.config
-
-```xml
-  <packageSources>
-    ...
-    <add key="Local" value="_build\nugets" />
-  </packageSources>
-```
-
 ## Usage  
+_The SDK is not yet made available on Nuget.org so it has to be referenced with version number from a separate nuget feed for now._
 
-- Update your .csproj files to SDK style format..
-  
+- Download the latest nupkg from Releases
+- Copy the nupkg to a nuget feed accessible by your solution.
+
+> It is recommended to use a local folder as a nuget feed and keep the nupkg under source control.
+> F.ex. .\_build\nugets and add the folder as source in the solution nuget.config (see working example in .\Solution-Example folder)
+>
+> ```xml
+>  <packageSources>
+>    ...
+>    <add key="Local" value="_build\nugets" />
+>  </packageSources>
+> ```
+>  
+
+- _Update your .csproj files to SDK style format if not done already_
 - Add the following line in your .csproj files.
 
 ```xml
@@ -45,7 +37,18 @@ Add the folder as source in thesolution nuget.config
 
 Add a file named Solution.props in the solution root folder for Solution wide properties such as publish paths.
 
+## Building / Extending / Contributing  
+
+Ensure that you have nuget version 15.x or later added to your PATH env variable. Download [nuget.exe from here](https://www.nuget.org/downloads)
+
+To create a nuget with the build SDK: 
+
+0. (optional) Increment the version number in Helix.Module.Build.Sdk.nuspec
+1. Run `nuget pack` from terminal.  
+
 ### Publish Paths
+
+... more documentation to come...
 
 ### Support Sitecore Role Types
 
@@ -53,9 +56,9 @@ Add a file named Solution.props in the solution root folder for Solution wide pr
 - ....
 - rendering
 
-More to come...  
+... more documentation to come...  
 
-You can make your own SitecoreRoleType specific for your solution:
+You can also make your own SitecoreRoleType specific for your solution:
 
 Example:
 
@@ -67,7 +70,7 @@ In a .csproj file set the SitecoreRoleType property to the name of your new role
 
 Add a file $(AdditionalSitecoreRolePropertiesDir)\myrole.props
 
-Example of how myrole.props could look for a dotnetcore 3.1 web app
+Example of how myrole.props could look like for a dotnetcore 3.1 web app
 
 ```xml
 <Project>
@@ -114,20 +117,17 @@ In Solution.props add a publish path for the role type:
 
 This SDK injects properties before Microsoft Common Targets are loaded to ensure the Sitecore Role type has been set before it is used to dynamically import other properties.  
 
-#### Very High level overview
+#### High level load order
 
-Directory.Build.Props 
-SDK Properties and MS Common props
-Project file properties
-Solution.props
-Solution.props.user
-Additional role type specific solution properties
+- Directory.Build.Props 
+- SDK Properties and MS Common props
+- Project file properties
+- Solution.props
+- Solution.props.user
+- Additional role type specific solution properties
     (ex. from files called Platform.props, Identity.props, XConnect.props)
-Additional role type specific user properties
+- Additional role type specific user properties
     (ex. from files called Platform.props.user, Identity.props.user, XConnect.props.user)
-Additional role type specific properties from this SDK
-
-Directory.Build.targets
-SDK targets and MS Common targets
-
-See ... for a detailed msbuild load order overview. Above high-level overview is just to support the use of this SDK.  
+- Additional role type specific properties from this SDK
+- Directory.Build.targets
+- SDK targets and MS Common targets 

@@ -1,3 +1,14 @@
+<!--
+***********************************************************************************************
+Platform.References.props
+  
+  System references used by modules targeting Platform
+
+
+                                                                      [Anders Laub // Laub+Co]
+***********************************************************************************************
+-->
+
 <Project>
     <ItemGroup>
         <Reference Include="Microsoft.CSharp" />

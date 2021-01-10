@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.15.7" />
+    <Sdk Name="Helix.Module.Build.Sdk" Version="0.2.16" />
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <RootNamespace>Feature.Example</RootNamespace>
         <AssemblyName>Feature.Example</AssemblyName>
         <SitecoreRoleType>platform</SitecoreRoleType>
     </PropertyGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <!--  Example; built-in sdk support for legacy nuget packages that does not have contentFiles set in nuspec -->
     <PackageReference Include="Unicorn" Version="4.1.1" IncludeAssets="All">
         <CopyLegacyContentPath>content\**\*.config</CopyLegacyContentPath>
