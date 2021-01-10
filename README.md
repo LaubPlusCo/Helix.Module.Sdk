@@ -1,11 +1,12 @@
 # Helix.Module.Sdk  
 MSBuild extensions to support SDK-style project formats and multi-targeting in Sitecore Helix solutions.  
 
-The Helix Module build SDK aims to simplify:
+The Helix Module build SDK aims to:
 
-* Keeping all modules for different Sitecore role types within the same Visual Studio solution
-* Publishing to different role types from a single solution using only msbuild
-* Creating environment specific deployments for multiple environments that has different Sitecore topologies using only msbuild
+* Simplify Keeping all modules for different Sitecore role types within the same Visual Studio solution
+* Streamlining publishing to different role types from a single solution using only msbuild
+* Switching between environments with different Sitecore topologies using only a single msbuild property
+* Remove msbuild plumbing setup when using SDK style projects for Sitecore platform modules
 * Remove platform module's dependency on Visual Studio's WebApplication.WebPublish target
 
 The latter enable developers to work solely in Visual Studio code even on old aspnet mvc or webforms solutions.
@@ -44,7 +45,7 @@ _The SDK is not yet made available on Nuget.org so it has to be referenced with 
     ...
     <PropertyGroup>
     ...
-     <!-- Set role type of project, ex. platform-->
+     <!-- Set role type of project, ex. "platform" (cm/cd formerly called "website") -->
         <SitecoreRoleType>platform</SitecoreRoleType>
     </PropertyGroup>
 ```  
@@ -67,7 +68,7 @@ For more details please see the [Solution Example](https://github.com/LaubPlusCo
 
 ## Building | Contributing  
 
-Ensure that you have nuget version 15.x or later added to your PATH env variable. Download [nuget.exe from here](https://www.nuget.org/downloads)
+Ensure that you have nuget.exe version v5.6 or later added to your PATH env variable. Download [nuget.exe from here](https://www.nuget.org/downloads)
 
 To create a nuget with the build SDK: 
 
@@ -131,7 +132,7 @@ In Solution.props add a publish path for the role type:
     ...
 ```
 
-_Please contribute missing role types that you create back to the SDK by forking this repo and create a PR_
+_Please contribute missing role types that you create back to the SDK by forking this repo, add the props file in a folder under ./src/Sdk/Properties/$(name-of-roletype), commit it and create a PR_
 
 ### MSBuild Properties load order  
 
