@@ -13,7 +13,8 @@ _The latter enable developers to work solely in Visual Studio Code even on old a
 
 > **Disclaimer**  
 > This concept started as a proof-of-concept and is still very much work in progress.   
-> The build SDK is already being used on "live" solutions however using it is your own responsibility. It is still in a pre-release state which means you should expect features to be missing, some manual setup, potential bugs and perhaps breaking changes in upcoming versions.  
+> The build SDK is already being used on "live" solutions however using it remains your own responsibility.  
+> It is still in a pre-release state which means you should expect features to be missing, some manual setup, potential bugs and perhaps breaking changes in upcoming versions.  
 
 
 > **Please comment and contribute!**
