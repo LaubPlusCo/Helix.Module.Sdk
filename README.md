@@ -137,7 +137,7 @@ _Please contribute missing role types that you create back to the SDK by forking
 
 ### MSBuild Properties load order  
 
-This SDK injects properties before Microsoft Common Targets are loaded to ensure the Sitecore Role type has been set before it is used to dynamically import other properties.  
+The SDK injects itself before `Microsoft.Common.Targets` is loaded to ensure that the SitecoreRoletype property has been set and can be used to import other properties dynamically.  
 
 #### High level load order
 
