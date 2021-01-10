@@ -35,7 +35,7 @@ _The SDK is not yet made available on Nuget.org so it has to be referenced with 
 >  
 
 - _Update your .csproj files to SDK style format if not done already_
-- Add the following to your .csproj files.
+- Add the following to your .csproj files ([example](https://github.com/LaubPlusCo/Helix.Module.Sdk/blob/master/_Solution-Example/src/Feature/Example/platform/Example.csproj)).
 
 ```xml
 <Project Sdk="....">
