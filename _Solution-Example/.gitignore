@@ -7,6 +7,8 @@
 gulp-config.js
 *.userprefs
 
+docker/deploy/*
+
 # Build results
 [Oo]utput/
 [Dd]ebug/
