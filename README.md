@@ -4,7 +4,7 @@ MSBuild extensions to support SDK-style project formats and multi-targeting in S
 The Helix Module build SDK aims to:
 
 * Simplify keeping all modules for different Sitecore role types within the same Visual Studio solution
-* Streamlining publishing to different role types from a single solution using only msbuild
+* Streamline publishing to different role types from a single solution using only msbuild
 * Switching between environments with different Sitecore topologies using only a single msbuild property
 * Remove msbuild plumbing setup when using SDK style projects for Sitecore platform modules
 * Remove platform modules dependency on Visual Studio's WebApplication.WebPublish target
